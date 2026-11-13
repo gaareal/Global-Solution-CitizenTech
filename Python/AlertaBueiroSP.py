@@ -9,7 +9,7 @@ nivelInicialAgua = float(input("Digite o nível inicial da água (em centimetros
 taxaDeElevacao = float(input("Digite a taxa de elevação da água (em centimetros por minuto): "))
 # Input do tempo para o cálculo
 tempoMinCalculo = float(input("Digite o tempo a ser calculado (em minutos): "))
-
+# Cálculo do nível projetado da água após determinado tempo
 calculoNivelProjetadoDaAgua = nivelInicialAgua + (taxaDeElevacao * tempoMinCalculo)
-
+# Exibição do resultado do cálculo do nível projetado da água
 print(f"O nível projetado da água após {tempoMinCalculo} minutos será de {calculoNivelProjetadoDaAgua} centimetros.")
