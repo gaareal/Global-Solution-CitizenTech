@@ -1,9 +1,18 @@
 # Menu inicial do sistema / Tela de boas-vindas
 print("Seja bem-vindo ao Sistema do Alerta Bueiro SP!")
+
+quantidadeDeCalculos = 0
+
+# Indica se os dados da última estimativa de transbordamento podem ser usados novamente
+estimativaTransbordamentoRealizada = False
+
 # Menu persistente até que o usuário escolha sair
 while True:
     print("\n1 - Calcular o nível projetado da água")
     print("2 - Ver a fórmula")
+    print("3 - Mostrar tabela por minuto")
+    print("4 - Mostrar quantidade de cálculos")
+    print("5 - Estimar tempo até o transbordamento")
     print("0 - Sair")
 
     opcao = input("Digite uma opção: ")
@@ -76,14 +85,125 @@ while True:
             calculoNivelProjetadoDaAgua = nivelInicialAgua + (taxaDeIntensidade * tempoMinCalculo)
             # Exibição do resultado do cálculo do nível projetado da água
             print(f"O nível projetado da água após {tempoMinCalculo} minutos será de {calculoNivelProjetadoDaAgua:.2f} centimetros.")
+
+            quantidadeDeCalculos += 1
+
         # Case para exibir a fórmula do cálculo do nível projetado da água
         case "2":
             print("h(t) = h0 + i x t")
             print("h0 é o nível inicial, i é a taxa de intensidade e t é o tempo.")
+
+        case "3":
+            if quantidadeDeCalculos > 0:
+                print("Minuto | Nível projetado (último cálculo)")
+                for minuto in range(0, 6):
+                    nivelNoMinuto = nivelInicialAgua + taxaDeIntensidade * minuto
+                    print(f"{minuto:6d} | {nivelNoMinuto:.2f} cm")
+            else:
+                print("Escolha a opção 1 para fazer um cálculo primeiro.")
+
+        case "4":
+            print(f"Cálculos realizados: {quantidadeDeCalculos}")
+
+        case "5":
+            # Escolha entre reutilizar os dados da última estimativa e digitar novos
+            reutilizarDadosTransbordamento = False
+            if estimativaTransbordamentoRealizada:
+                print(f"Última estimativa com nível inicial de {nivelInicialTransbordamento} cm, "
+                      f"taxa de {taxaDeIntensidadeTransbordamento} cm/min "
+                      f"e altura limite de {alturaLimiteTransbordamento} cm.")
+                while True:
+                    resposta = input("Deseja usar os mesmos valores? (S/N): ").upper()
+                    if resposta in ["S", "N"]:
+                        reutilizarDadosTransbordamento = resposta == "S"
+                        break
+                    print("Opção inválida. Digite S para usar os mesmos valores ou N para digitar novos.")
+
+            if reutilizarDadosTransbordamento == False:
+                # Leitura e validação do campo de nível inicial
+                while True:
+                    nivelInicialTransbordamento = input("Digite o nível inicial da água em centímetros (ex.: 10): ")
+                    valido = True
+                    tem_Digito = False
+                    quantidade_de_pontos = 0
+
+                    for caractere in nivelInicialTransbordamento:
+                        if caractere in "0123456789":
+                            tem_Digito = True
+                        elif caractere == ".":
+                            quantidade_de_pontos += 1
+                        else:
+                            valido = False
+
+                    if valido and tem_Digito and quantidade_de_pontos <= 1:
+                        nivelInicialTransbordamento = float(nivelInicialTransbordamento)
+                        break
+
+                    print("Entrada inválida. Digite zero ou um número positivo usando ponto decimal.")
+
+                # Leitura e validação do campo de taxa de intensidade
+                while True:
+                    taxaDeIntensidadeTransbordamento = input("Digite a taxa de intensidade em centímetros por minuto (ex.: 2.5): ")
+                    valido = True
+                    tem_Digito = False
+                    quantidade_de_pontos = 0
+
+                    for caractere in taxaDeIntensidadeTransbordamento:
+                        if caractere in "0123456789":
+                            tem_Digito = True
+                        elif caractere == ".":
+                            quantidade_de_pontos += 1
+                        else:
+                            valido = False
+
+                    if valido and tem_Digito and quantidade_de_pontos <= 1:
+                        taxaDeIntensidadeTransbordamento = float(taxaDeIntensidadeTransbordamento)
+                        break
+
+                    print("Entrada inválida. Digite zero ou um número positivo usando ponto decimal.")
+
+                # Leitura e validação do campo de altura limite
+                while True:
+                    alturaLimiteTransbordamento = input("Digite a altura limite em centímetros (ex.: 22.5): ")
+                    valido = True
+                    tem_Digito = False
+                    quantidade_de_pontos = 0
+
+                    for caractere in alturaLimiteTransbordamento:
+                        if caractere in "0123456789":
+                            tem_Digito = True
+                        elif caractere == ".":
+                            quantidade_de_pontos += 1
+                        else:
+                            valido = False
+
+                    if valido and tem_Digito and quantidade_de_pontos <= 1:
+                        alturaLimiteTransbordamento = float(alturaLimiteTransbordamento)
+                        break
+
+                    print("Entrada inválida. Digite zero ou um número positivo usando ponto decimal.")
+
+            # Verificação do nível inicial e da taxa antes de calcular o tempo
+            if nivelInicialTransbordamento == alturaLimiteTransbordamento:
+                print("No nível inicial, a água já está na altura limite.")
+            elif nivelInicialTransbordamento > alturaLimiteTransbordamento:
+                print("No nível inicial, a água já ultrapassou a altura limite.")
+            elif taxaDeIntensidadeTransbordamento == 0:
+                print("Com taxa de intensidade igual a zero, a água fica abaixo da altura limite.")
+            else:
+                # Na fórmula h(t) = h0 + i * t, a água chega ao limite quando h(t) = alturaLimite.
+                # Subtraímos h0 dos dois lados e dividimos por i para obter t = (alturaLimite - h0) / i.
+                tempoAteTransbordamento = (
+                    alturaLimiteTransbordamento - nivelInicialTransbordamento
+                ) / taxaDeIntensidadeTransbordamento
+                print(f"Tempo estimado desde o nível inicial até a altura limite: {tempoAteTransbordamento:.2f} minutos.")
+
+            estimativaTransbordamentoRealizada = True
+
         # Case para encerrar o programa
         case "0":
             print("Programa encerrado.")
             break
 
         case _:
-            print("Opção inválida. Digite 1, 2 ou 0.")
+            print("Opção inválida. Digite 1, 2, 3, 4, 5 ou 0.")
