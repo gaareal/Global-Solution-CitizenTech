@@ -93,12 +93,36 @@ while True:
             print("h(t) = h0 + i x t")
             print("h0 é o nível inicial, i é a taxa de intensidade e t é o tempo.")
 
+        # Case para mostrar a tabela até o minuto escolhido pelo usuário
         case "3":
             if quantidadeDeCalculos > 0:
-                print("Minuto | Nível projetado (último cálculo)")
-                for minuto in range(0, 6):
+                # O último minuto deve ser um número inteiro a partir de zero
+                while True:
+                    entradaMinutoTabela = input("Até qual minuto você quer ver a tabela? ")
+                    valido = entradaMinutoTabela != ""
+
+                    for caractere in entradaMinutoTabela:
+                        if caractere not in "0123456789":
+                            valido = False
+                            break
+
+                    if valido:
+                        minutosTabela = int(entradaMinutoTabela)
+                        break
+
+                    print("Entrada inválida. Digite um número inteiro a partir de zero.")
+
+                # Guarda o nível projetado em uma lista, com uma posição por minuto
+                niveisPorMinuto = []
+                # O + 1 inclui o último minuto, pois o range para antes do limite
+                for minuto in range(minutosTabela + 1):
                     nivelNoMinuto = nivelInicialAgua + taxaDeIntensidade * minuto
-                    print(f"{minuto:6d} | {nivelNoMinuto:.2f} cm")
+                    niveisPorMinuto.append(nivelNoMinuto)
+
+                # A posição na lista corresponde ao minuto da projeção
+                print("Minuto | Nível projetado (último cálculo)")
+                for minuto in range(len(niveisPorMinuto)):
+                    print(f"{minuto:6d} | {niveisPorMinuto[minuto]:.2f} cm")
             else:
                 print("Escolha a opção 1 para fazer um cálculo primeiro.")
 
