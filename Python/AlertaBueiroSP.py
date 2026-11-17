@@ -22,7 +22,7 @@ while True:
         case "1":
             # Input do h0
             while True:
-                nivelInicialAgua = input("Digite o nível inicial da água (em centimetros): ")
+                nivelInicialAgua = input("Digite o nível inicial da água (em milímetros): ")
 
                 valido = True
                 tem_Digito = False
@@ -43,7 +43,7 @@ while True:
 
             # Input do i
             while True:
-                taxaDeIntensidade = input("Digite a taxa de intensidade (em centimetros por minuto): ")
+                taxaDeIntensidade = input("Digite a taxa de intensidade (em milímetros por minuto): ")
 
                 valido = True
                 tem_Digito = False
@@ -85,7 +85,7 @@ while True:
             # Cálculo do nível projetado da água após determinado tempo
             calculoNivelProjetadoDaAgua = nivelInicialAgua + (taxaDeIntensidade * tempoMinCalculo)
             # Exibição do resultado do cálculo do nível projetado da água
-            print(f"O nível projetado da água após {tempoMinCalculo} minutos será de {calculoNivelProjetadoDaAgua:.2f} centimetros.")
+            print(f"O nível projetado da água após {tempoMinCalculo} minutos será de {calculoNivelProjetadoDaAgua:.2f} milímetros.")
 
             # Adiciona o nível calculado ao histórico
             historicoProjecoes.append(calculoNivelProjetadoDaAgua)
@@ -93,7 +93,7 @@ while True:
         # Case para exibir a fórmula do cálculo do nível projetado da água
         case "2":
             print("h(t) = h0 + i x t")
-            print("h0 é o nível inicial, i é a taxa de intensidade e t é o tempo.")
+            print("h0 é o nível inicial em mm, i é a taxa de intensidade em mm/min e t é o tempo em minutos.")
 
         # Case para mostrar a tabela até o minuto escolhido pelo usuário
         case "3":
@@ -124,7 +124,7 @@ while True:
                 # A posição na lista corresponde ao minuto da projeção
                 print("Minuto | Nível projetado (último cálculo)")
                 for minuto in range(len(niveisPorMinuto)):
-                    print(f"{minuto:6d} | {niveisPorMinuto[minuto]:.2f} cm")
+                    print(f"{minuto:6d} | {niveisPorMinuto[minuto]:.2f} mm")
             else:
                 print("Escolha a opção 1 para fazer um cálculo primeiro.")
 
@@ -135,15 +135,15 @@ while True:
             # Os índices começam em zero, mas a numeração exibida começa em um
             for indice in range(len(historicoProjecoes)):
                 nivelProjetado = historicoProjecoes[indice]
-                print(f"Projeção {indice + 1}: {nivelProjetado:.2f} cm")
+                print(f"Projeção {indice + 1}: {nivelProjetado:.2f} mm")
 
         case "5":
             # Escolha entre reutilizar os dados da última estimativa e digitar novos
             reutilizarDadosTransbordamento = False
             if estimativaTransbordamentoRealizada:
-                print(f"Última estimativa com nível inicial de {nivelInicialTransbordamento} cm, "
-                      f"taxa de {taxaDeIntensidadeTransbordamento} cm/min "
-                      f"e altura limite de {alturaLimiteTransbordamento} cm.")
+                print(f"Última estimativa com nível inicial de {nivelInicialTransbordamento} mm, "
+                      f"taxa de {taxaDeIntensidadeTransbordamento} mm/min "
+                      f"e altura limite de {alturaLimiteTransbordamento} mm.")
                 while True:
                     resposta = input("Deseja usar os mesmos valores? (S/N): ").upper()
                     if resposta in ["S", "N"]:
@@ -154,7 +154,7 @@ while True:
             if reutilizarDadosTransbordamento == False:
                 # Leitura e validação do campo de nível inicial
                 while True:
-                    nivelInicialTransbordamento = input("Digite o nível inicial da água em centímetros (ex.: 10): ")
+                    nivelInicialTransbordamento = input("Digite o nível inicial da água em milímetros (ex.: 100): ")
                     valido = True
                     tem_Digito = False
                     quantidade_de_pontos = 0
@@ -175,7 +175,7 @@ while True:
 
                 # Leitura e validação do campo de taxa de intensidade
                 while True:
-                    taxaDeIntensidadeTransbordamento = input("Digite a taxa de intensidade em centímetros por minuto (ex.: 2.5): ")
+                    taxaDeIntensidadeTransbordamento = input("Digite a taxa de intensidade em milímetros por minuto (ex.: 25): ")
                     valido = True
                     tem_Digito = False
                     quantidade_de_pontos = 0
@@ -196,7 +196,7 @@ while True:
 
                 # Leitura e validação do campo de altura limite
                 while True:
-                    alturaLimiteTransbordamento = input("Digite a altura limite em centímetros (ex.: 22.5): ")
+                    alturaLimiteTransbordamento = input("Digite a altura limite em milímetros (ex.: 225): ")
                     valido = True
                     tem_Digito = False
                     quantidade_de_pontos = 0
