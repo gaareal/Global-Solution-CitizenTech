@@ -1,7 +1,8 @@
 # Menu inicial do sistema / Tela de boas-vindas
 print("Seja bem-vindo ao Sistema do Alerta Bueiro SP!")
 
-quantidadeDeCalculos = 0
+# Guarda o nível final de cada projeção durante o uso do programa
+historicoProjecoes = []
 
 # Indica se os dados da última estimativa de transbordamento podem ser usados novamente
 estimativaTransbordamentoRealizada = False
@@ -11,7 +12,7 @@ while True:
     print("\n1 - Calcular o nível projetado da água")
     print("2 - Ver a fórmula")
     print("3 - Mostrar tabela por minuto")
-    print("4 - Mostrar quantidade de cálculos")
+    print("4 - Mostrar histórico de projeções")
     print("5 - Estimar tempo até o transbordamento")
     print("0 - Sair")
 
@@ -86,7 +87,8 @@ while True:
             # Exibição do resultado do cálculo do nível projetado da água
             print(f"O nível projetado da água após {tempoMinCalculo} minutos será de {calculoNivelProjetadoDaAgua:.2f} centimetros.")
 
-            quantidadeDeCalculos += 1
+            # Adiciona o nível calculado ao histórico
+            historicoProjecoes.append(calculoNivelProjetadoDaAgua)
 
         # Case para exibir a fórmula do cálculo do nível projetado da água
         case "2":
@@ -95,7 +97,7 @@ while True:
 
         # Case para mostrar a tabela até o minuto escolhido pelo usuário
         case "3":
-            if quantidadeDeCalculos > 0:
+            if len(historicoProjecoes) > 0:
                 # O último minuto deve ser um número inteiro a partir de zero
                 while True:
                     entradaMinutoTabela = input("Até qual minuto você quer ver a tabela? ")
@@ -126,8 +128,14 @@ while True:
             else:
                 print("Escolha a opção 1 para fazer um cálculo primeiro.")
 
+        # Case para mostrar a quantidade e os resultados das projeções
         case "4":
-            print(f"Cálculos realizados: {quantidadeDeCalculos}")
+            print(f"Cálculos realizados: {len(historicoProjecoes)}")
+
+            # Os índices começam em zero, mas a numeração exibida começa em um
+            for indice in range(len(historicoProjecoes)):
+                nivelProjetado = historicoProjecoes[indice]
+                print(f"Projeção {indice + 1}: {nivelProjetado:.2f} cm")
 
         case "5":
             # Escolha entre reutilizar os dados da última estimativa e digitar novos
